@@ -1,5 +1,4 @@
 const http = require('http');
-const fs = require('fs');
 const PORT = process.env.PORT || 3000;
 
 /**
@@ -10,17 +9,15 @@ const imgBuffer = new Buffer(
 	'hex'
 );
 
-const fileName = 'requests.log';
+let text = 'First row.';
 
 const server = http.createServer((req, res) => {
-	const file = fs.readFileSync(fileName, 'utf-8');
 	if (req.url === '/image.gif') {
-		return fs.writeFile(fileName, `${file} \n ${new Date()}: request was done`, () => {
-			res.writeHead(200, {'Content-Type': 'image/gif'});
-			res.end(imgBuffer, 'binary');
-		});
+		text += `\n ${new Date()}: request was done`;
+		res.writeHead(200, {'Content-Type': 'image/gif'});
+		res.end(imgBuffer, 'binary');
 	}
-	res.end(file);
+	res.end(text);
 });
 
 server.listen(PORT, err => {
