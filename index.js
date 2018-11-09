@@ -12,8 +12,11 @@ const imgBuffer = new Buffer(
 let text = 'First row.';
 
 const server = http.createServer((req, res) => {
-	if (req.url === '/image.gif') {
-		text += `\n ${new Date()}: request was done`;
+	const urlPath = req.url.substr(1, 9);
+	// console.log(`urlPath = ${urlPath}`);
+
+	if (urlPath === 'image.gif') {
+		text += `\n ${new Date()}: request was done with url ${req.url}`;
 		res.writeHead(200, {'Content-Type': 'image/gif'});
 		res.end(imgBuffer, 'binary');
 	}
